@@ -4,8 +4,8 @@ import tkinter as tk
 from tkinter import ttk
 import customtkinter as ctk
 
-APP_VERSION = "1.0"
-TOOL_NAME = f"Ultimate Network Toolkit v{APP_VERSION}"
+APP_VERSION = "1.1"
+TOOL_NAME = f"BlueFalcon NTK v{APP_VERSION}"
 
 # ==========================================
 # MATERIAL DESIGN 3 DARK THEME PALETTE

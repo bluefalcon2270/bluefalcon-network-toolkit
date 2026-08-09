@@ -1,15 +1,46 @@
 import os
 import re
 
+DEFAULT_TEMPLATE = """IPs:
+1.1.1.1
+8.8.8.8
+9.9.9.9
+208.67.222.222
+1.0.0.1
+8.8.4.4
+94.140.14.14
+8.26.56.26
+76.76.2.0
+64.6.64.6
+
+Domains:
+google.com
+github.com
+api.telegram.org
+archive.ubuntu.com
+cloudflare.com
+speedtest.net
+netflix.com
+aws.amazon.com
+wikipedia.org
+bing.com
+
+DNS:
+1.1.1.1
+8.8.8.8
+9.9.9.9
+208.67.222.222
+94.140.14.14
+209.244.0.3
+1.1.1.2
+8.26.56.26
+185.228.168.9
+76.76.19.19"""
+
 class ConfigManager:
     @staticmethod
-    def get_available_profiles():
-        profiles = [f for f in os.listdir('.') if f.startswith('config_') and f.endswith('.txt')]
-        if not profiles:
-            default = "config_default.txt"
-            ConfigManager.save_single_profile(default, {"dns_list": [], "domain_list": [], "ip_list": []})
-            return [default]
-        return sorted(profiles)
+    def get_default():
+        return DEFAULT_TEMPLATE
 
     @staticmethod
     def format_targets(content):
@@ -73,40 +104,28 @@ class ConfigManager:
         return formatted.strip(), data
 
     @staticmethod
-    def load_single_profile(filename):
-        if not os.path.exists(filename):
-            return {"ip_list": [], "domain_list": [], "dns_list": []}
+    def load_profile():
+        if not os.path.exists("Profile.txt"):
+            with open("Profile.txt", "w", encoding="utf-8") as f:
+                f.write(DEFAULT_TEMPLATE)
             
-        with open(filename, "r", encoding="utf-8") as f:
+        with open("Profile.txt", "r", encoding="utf-8") as f:
             content = f.read()
             
         _, data = ConfigManager.format_targets(content)
         return data
-
-    @staticmethod
-    def load_multiple_profiles(filenames):
-        merged_data = {"ip_list": [], "domain_list": [], "dns_list": []}
-        seen_ips = set(); seen_domains = set(); seen_dns = set()
         
-        for fname in filenames:
-            data = ConfigManager.load_single_profile(fname)
-            for item in data.get("ip_list", []):
-                if item not in seen_ips: seen_ips.add(item); merged_data["ip_list"].append(item)
-            for item in data.get("domain_list", []):
-                if item not in seen_domains: seen_domains.add(item); merged_data["domain_list"].append(item)
-            for item in data.get("dns_list", []):
-                if item not in seen_dns: seen_dns.add(item); merged_data["dns_list"].append(item)
-                
-        return merged_data
+    @staticmethod
+    def load_profile_raw():
+        if not os.path.exists("Profile.txt"):
+            with open("Profile.txt", "w", encoding="utf-8") as f:
+                f.write(DEFAULT_TEMPLATE)
+        with open("Profile.txt", "r", encoding="utf-8") as f:
+            return f.read().strip()
 
     @staticmethod
-    def save_single_profile(filename, data):
-        formatted = "IPs:\n"
-        for item in data.get("ip_list", []): formatted += f"{item}\n"
-        formatted += "\nDomains:\n"
-        for item in data.get("domain_list", []): formatted += f"{item}\n"
-        formatted += "\nDNS:\n"
-        for item in data.get("dns_list", []): formatted += f"{item}\n"
-            
-        with open(filename, "w", encoding="utf-8") as f:
+    def save_profile(content):
+        formatted, _ = ConfigManager.format_targets(content)
+        with open("Profile.txt", "w", encoding="utf-8") as f:
             f.write(formatted.strip() + "\n")
+        return formatted

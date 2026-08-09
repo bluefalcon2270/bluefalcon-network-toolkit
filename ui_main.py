@@ -228,7 +228,7 @@ class UltimateNetworkApp(ctk.CTk):
     def update_dns_dropdowns(self, _=None):
         v1 = self.in_dom_dns1.get()
         v2 = self.in_dom_dns2.get()
-        merged_data = ConfigManager.load_multiple_profiles(ConfigManager.get_available_profiles())
+        merged_data = ConfigManager.load_profile()
         all_dns = [d.split()[0] for d in merged_data.get("dns_list", [])]
         
         l1 = [d for d in all_dns if d != v2]
@@ -240,7 +240,7 @@ class UltimateNetworkApp(ctk.CTk):
     def toggle_custom_dns(self):
         if self.dns_switch_var.get() == "on":
             self.dns_inputs_frame.pack(side="left", before=self.dom_actions_frame)
-            merged_data = ConfigManager.load_multiple_profiles(ConfigManager.get_available_profiles())
+            merged_data = ConfigManager.load_profile()
             dns_list = [d.split()[0] for d in merged_data.get("dns_list", [])]
             self.in_dom_dns1.configure(values=dns_list)
             self.in_dom_dns2.configure(values=dns_list)
@@ -340,8 +340,7 @@ class UltimateNetworkApp(ctk.CTk):
         
         for item in tree.get_children(): tree.delete(item)
             
-        data_cfg = ConfigManager.load_single_profile(self.views["profiles"].winfo_children()[0].winfo_children()[0].winfo_children()[1].winfo_children()[0].cget("text") if hasattr(self, "dropdown_var") else "config_default.txt")
-        merged_data = ConfigManager.load_multiple_profiles(ConfigManager.get_available_profiles())
+        merged_data = ConfigManager.load_profile()
         ips = merged_data.get("ip_list", [])
         domains = merged_data.get("domain_list", [])
         dns = merged_data.get("dns_list", [])

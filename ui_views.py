@@ -20,56 +20,28 @@ class ViewBuilder:
         file_frame = ctk.CTkFrame(edit_card, fg_color="transparent")
         file_frame.pack(fill="x", padx=30, pady=(30, 10))
 
-        profiles = ConfigManager.get_available_profiles()
-        default_sel = profiles[0] if profiles else "config_default.txt"
-
-        dropdown_var = ctk.StringVar(value=default_sel)
-        combo_profile = ctk.CTkOptionMenu(file_frame, values=profiles, variable=dropdown_var,
-                                               font=("Segoe UI", 14, "bold"), fg_color=MD_BG, button_color=MD_BG, button_hover_color=MD_SURFACE_2, corner_radius=16, height=40, width=220)
-        combo_profile.pack(side="left", padx=(0, 15))
-
         target_editor = ctk.CTkTextbox(edit_card, font=("Consolas", 15), fg_color=MD_BG, text_color=MD_TEXT, corner_radius=16, border_width=1, border_color=MD_SURFACE_2)
         target_editor.pack(fill="both", expand=True, padx=30, pady=(10, 30))
 
         undo_content = {"text": None}
         btn_undo = ctk.CTkButton(file_frame, text="Undo", width=70, height=40, corner_radius=20, fg_color=MD_RED, text_color="#000000", font=("Segoe UI", 13, "bold"))
 
-        def load_profile_into_editor(filename):
-            if not filename or filename == "None": return
-            data = ConfigManager.load_single_profile(filename)
-            formatted = "IPs:\n"
-            for item in data.get("ip_list", []): formatted += f"{item}\n"
-            formatted += "\nDomains:\n"
-            for item in data.get("domain_list", []): formatted += f"{item}\n"
-            formatted += "\nDNS:\n"
-            for item in data.get("dns_list", []): formatted += f"{item}\n"
-            
+        def load_current():
             target_editor.delete("1.0", "end")
-            target_editor.insert("1.0", formatted.strip())
+            target_editor.insert("1.0", ConfigManager.load_profile_raw())
+            
+        load_current()
 
-        combo_profile.configure(command=load_profile_into_editor)
-        load_profile_into_editor(default_sel)
+        def open_file():
+            import os
+            if not os.path.exists("Profile.txt"):
+                ConfigManager.save_profile(ConfigManager.get_default())
+            os.startfile(os.path.abspath("Profile.txt"))
 
-        def browse_file():
-            import tkinter.filedialog
-            filepath = tkinter.filedialog.askopenfilename(title="Select Profile File", filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")])
-            if filepath:
-                filename = os.path.basename(filepath)
-                import shutil
-                if not os.path.exists(filename) and os.path.dirname(filepath) != os.path.abspath("."):
-                    shutil.copy(filepath, filename)
-                
-                new_profiles = ConfigManager.get_available_profiles()
-                if filename not in new_profiles: new_profiles.append(filename)
-                combo_profile.configure(values=new_profiles)
-                dropdown_var.set(filename)
-                load_profile_into_editor(filename)
-                
         def load_template():
             undo_content["text"] = target_editor.get("1.0", "end")
             target_editor.delete("1.0", "end")
-            tmpl = "IPs:\n192.168.1.1\n8.8.8.8\n\nDomains:\ngoogle.com\ngithub.com\n\nDNS:\n1.1.1.1\n8.8.8.8\n"
-            target_editor.insert("1.0", tmpl)
+            target_editor.insert("1.0", ConfigManager.get_default())
             btn_undo.pack(side="left", padx=(10, 0))
 
         def undo_template():
@@ -80,35 +52,17 @@ class ViewBuilder:
                 btn_undo.pack_forget()
 
         def save_targets():
-            sel_file = dropdown_var.get()
-            if not sel_file or sel_file == "None": return
             content = target_editor.get("1.0", "end").strip()
-            formatted, data = ConfigManager.format_targets(content)
-            ConfigManager.save_single_profile(sel_file, data)
+            formatted = ConfigManager.save_profile(content)
             target_editor.delete("1.0", "end")
             target_editor.insert("1.0", formatted)
             btn_undo.pack_forget()
 
-        def create_empty():
-            name = simpledialog.askstring("New Profile", "Enter profile name:")
-            if name:
-                clean_name = "".join([c for c in name if c.isalnum() or c in " _-"]).strip().replace(" ", "_")
-                if clean_name:
-                    filename = f"config_{clean_name}.txt"
-                    if filename not in ConfigManager.get_available_profiles():
-                        ConfigManager.save_single_profile(filename, {"ip_list": [], "domain_list": [], "dns_list": []})
-                        app.refresh_sidebar_views()
-                    else:
-                        messagebox.showwarning("Exists", "Profile already exists.")
-
-        btn_browse = ctk.CTkButton(file_frame, text="Load File", width=100, height=40, corner_radius=20, fg_color="#1F2937", text_color=MD_TEXT, hover_color="#374151", border_width=1, border_color="#374151", font=("Segoe UI", 13, "bold"), command=browse_file)
+        btn_browse = ctk.CTkButton(file_frame, text="Open Profile File", width=120, height=40, corner_radius=20, fg_color="#1F2937", text_color=MD_TEXT, hover_color="#374151", border_width=1, border_color="#374151", font=("Segoe UI", 13, "bold"), command=open_file)
         btn_browse.pack(side="left", padx=(0, 15))
         
-        btn_template = ctk.CTkButton(file_frame, text="Load Template", width=120, height=40, corner_radius=20, fg_color="#1F2937", text_color=MD_TEXT, hover_color="#374151", border_width=1, border_color="#374151", font=("Segoe UI", 13, "bold"), command=load_template)
+        btn_template = ctk.CTkButton(file_frame, text="Reset to Default", width=120, height=40, corner_radius=20, fg_color="#1F2937", text_color=MD_TEXT, hover_color="#374151", border_width=1, border_color="#374151", font=("Segoe UI", 13, "bold"), command=load_template)
         btn_template.pack(side="left")
-
-        btn_create = ctk.CTkButton(file_frame, text="+ Create New", width=120, height=40, corner_radius=20, fg_color="#1F2937", text_color=MD_TEXT, hover_color="#374151", border_width=1, border_color="#374151", font=("Segoe UI", 13, "bold"), command=create_empty)
-        btn_create.pack(side="left", padx=(15, 0))
 
         btn_undo.configure(command=undo_template)
         
