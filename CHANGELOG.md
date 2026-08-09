@@ -2,6 +2,15 @@
 
 All notable changes to the BlueFalcon NTK project will be documented in this file.
 
+## [v2.0] - 2026-08-09
+### Added
+- Added a live progress indicator to the DNS tab (`Progress: X/Total`) that updates in real-time alongside the "Start Test" button.
+- Upgraded the DNS "Status" column into a "Success" column to directly show the success rate (e.g., `10/12`) for each DNS server instead of a generic fraction.
+### Fixed
+- Fixed the "Copy IPs" button on the Domain tab that was previously copying an empty string; it now correctly exports all discovered IPs.
+- Fixed a bug in the DNS tab where the "Sort" button crashed in the background when trying to sort success fraction text mathematically. The table now flawlessly sorts by highest success rate, followed by lowest average ping.
+- Updated the "GitHub" link in the About tab to correctly route to the new `BlueFalcon-NTK` repository address.
+
 ## [v1.9] - 2026-08-09
 ### Fixed
 - Fixed an oversight where the hardcoded SVG Version badge in `README.md` was left outdated at `v1.6`.

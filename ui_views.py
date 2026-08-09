@@ -88,7 +88,7 @@ class ViewBuilder:
         links = ctk.CTkFrame(card, fg_color="transparent")
         links.pack(pady=10)
         
-        btn_gh = ctk.CTkButton(links, text="GitHub", font=("Segoe UI", 15, "bold"), height=48, width=120, fg_color="#282A2C", hover_color="#383A3C", text_color=MD_TEXT, corner_radius=24, command=lambda: webbrowser.open_new_tab("https://github.com/bluefalcon2270/bluefalcon-ultimate-network-toolkit"))
+        btn_gh = ctk.CTkButton(links, text="GitHub", font=("Segoe UI", 15, "bold"), height=48, width=120, fg_color="#282A2C", hover_color="#383A3C", text_color=MD_TEXT, corner_radius=24, command=lambda: webbrowser.open_new_tab("https://github.com/bluefalcon2270/BlueFalcon-NTK"))
         btn_gh.pack(side="left", padx=10)
         
         btn_email = ctk.CTkButton(links, text="BlueFalcon2270@gmail.com", font=("Segoe UI", 15, "bold"), height=48, fg_color=MD_BG, hover_color="#282A2C", text_color=MD_TEXT, corner_radius=24)

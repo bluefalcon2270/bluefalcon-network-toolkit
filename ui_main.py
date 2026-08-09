@@ -295,6 +295,9 @@ class UltimateNetworkApp(ctk.CTk):
         
         self.btn_start_dns = ctk.CTkButton(inner, text="Start Test", font=("Segoe UI", 15, "bold"), fg_color=MD_PRIMARY, text_color=MD_ON_PRIMARY, command=lambda: self.toggle_scan("dns"))
         self.btn_start_dns.pack(side="right", padx=10)
+        
+        self.lbl_dns_progress = ctk.CTkLabel(inner, text="", font=("Segoe UI", 14, "bold"), text_color=MD_CYAN)
+        self.lbl_dns_progress.pack(side="right", padx=(0,15))
 
         self.tbl_dns = ScrollableTable(parent)
         self.tbl_dns.pack(fill="both", expand=True, padx=30, pady=(0, 20))
@@ -303,10 +306,17 @@ class UltimateNetworkApp(ctk.CTk):
         items = []
         for child in self.tbl_dns.tree.get_children():
             vals = self.tbl_dns.tree.item(child, "values")
-            errs = float(vals[3]) if vals and len(vals) > 3 else 999
+            
+            success_str = vals[3] if vals and len(vals) > 3 else "0/0"
+            try:
+                successes = int(str(success_str).split('/')[0])
+            except:
+                successes = 0
+            sort_success = -successes
+            
             ping = vals[4] if vals and len(vals) > 4 else "Failed"
             ping_val = float(ping.replace(" ms", "")) if "ms" in str(ping) else 99999
-            items.append((child, errs, ping_val))
+            items.append((child, sort_success, ping_val))
         items.sort(key=lambda x: (x[1], x[2]))
         for i, (child, errs, ping_val) in enumerate(items):
             self.tbl_dns.tree.move(child, "", i)
@@ -411,6 +421,10 @@ class UltimateNetworkApp(ctk.CTk):
                 seen_dns.add(dns_ip)
                 scan_jobs.append(dns_ip)
             if not scan_jobs: return
+            self.dns_total_tasks = len(scan_jobs) * len(domains)
+            self.dns_completed_tasks = 0
+            if hasattr(self, 'lbl_dns_progress'):
+                self.lbl_dns_progress.configure(text=f"Progress: 0/{self.dns_total_tasks}")
             with self.results_lock:
                 for dns_ip in scan_jobs:
                     a = [x for x in dns if x.startswith(dns_ip)][0]
@@ -490,12 +504,12 @@ class UltimateNetworkApp(ctk.CTk):
 
     def _redraw_dns_headers(self, domains):
         self.tbl_dns.tree.configure(displaycolumns="#all")
-        cols = ["idx", "address", "name", "status", "ping"] + domains
+        cols = ["idx", "address", "name", "success", "ping"] + domains
         self.tbl_dns.tree.configure(columns=cols)
         self.tbl_dns.tree.heading("idx", text="#", anchor="center"); self.tbl_dns.tree.column("idx", width=50, anchor="center", stretch=False)
         self.tbl_dns.tree.heading("address", text="DNS Address", anchor="center"); self.tbl_dns.tree.column("address", width=180, anchor="w", stretch=False)
         self.tbl_dns.tree.heading("name", text="DNS Name", anchor="center"); self.tbl_dns.tree.column("name", width=140, anchor="w", stretch=False)
-        self.tbl_dns.tree.heading("status", text="Status", anchor="center"); self.tbl_dns.tree.column("status", width=100, anchor="center", stretch=False)
+        self.tbl_dns.tree.heading("success", text="Success", anchor="center"); self.tbl_dns.tree.column("success", width=100, anchor="center", stretch=False)
         self.tbl_dns.tree.heading("ping", text="Avg Ping (ms)", anchor="center"); self.tbl_dns.tree.column("ping", width=120, anchor="center", stretch=False)
         for d in domains:
             self.tbl_dns.tree.heading(d, text=d.split()[0], anchor="center")
@@ -551,6 +565,7 @@ class UltimateNetworkApp(ctk.CTk):
             if err:
                 self.tbl_dom.tree.item(domain, values=(d["idx"], d["domain"], "FAILED", "-"), tags=("row_error",))
                 return
+            d["ips"] = ip_list
             tag = "row_success" if ip_list else "row_warning"
             current_cols = list(self.tbl_dom.tree["columns"])
             req = len(ip_list); cur = len(current_cols) - 4 
@@ -572,8 +587,14 @@ class UltimateNetworkApp(ctk.CTk):
             
             d["dom_results"][domain] = time_str
             
+            if hasattr(self, 'dns_completed_tasks'):
+                self.dns_completed_tasks += 1
+                if hasattr(self, 'lbl_dns_progress'):
+                    self.lbl_dns_progress.configure(text=f"Progress: {self.dns_completed_tasks}/{self.dns_total_tasks}")
+            
             avg_ping = f"{round(sum(d['latencies'])/len(d['latencies']))} ms" if d["latencies"] else "FAIL"
-            stat_str = f"{d['tested']}/{d['total']}"
+            successes = d['tested'] - d['errors']
+            stat_str = f"{successes}/{d['total']}"
             
             dom_vals = [d["dom_results"][dom] for dom in list(self.tbl_dns.tree["columns"])[5:]]
             
