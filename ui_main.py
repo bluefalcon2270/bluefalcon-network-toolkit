@@ -645,8 +645,8 @@ class UltimateNetworkApp(ctk.CTk):
         except: workers = 150
         sem = asyncio.Semaphore(workers)
         
-        merged_data = ConfigManager.load_multiple_profiles(ConfigManager.get_available_profiles())
-        domains = merged_data["domain_list"]
+        merged_data = ConfigManager.load_profile()
+        domains = merged_data.get("domain_list", [])
         
         async def resolve_dns(dns_ip, dom):
             async with sem:
