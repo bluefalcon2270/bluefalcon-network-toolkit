@@ -1,0 +1,26 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# PyInstaller
+*.spec
+build/
+dist/
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# App-specific profiles/configs
+# Keep the default, but ignore others if needed
+# config_*.txt
+!config_default.txt
+
+# VSCode
+.vscode/
