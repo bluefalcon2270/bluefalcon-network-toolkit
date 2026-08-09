@@ -1,5 +1,7 @@
 # 🦅 BlueFalcon NTK
 
+![BlueFalcon NTK Screenshot](screenshot.png)
+
 **BlueFalcon NTK** (Network Toolkit) is a powerful, lightning-fast, and extremely easy-to-use application designed for testing and analyzing network performance. Whether you're a gamer trying to find the best DNS server, or a system admin checking if your ports are open, this app does it all from one sleek interface!
 
 ---

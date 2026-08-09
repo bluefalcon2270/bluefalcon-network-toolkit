@@ -2,6 +2,10 @@
 
 All notable changes to the BlueFalcon NTK project will be documented in this file.
 
+## [v1.4] - 2026-08-09
+### Added
+- Embedded high-quality application screenshot into the `README.md` to improve GitHub repository presentation.
+
 ## [v1.3] - 2026-08-09
 ### Changed
 - Improved sidebar logo typography by centering the text, increasing the title font size, and applying a cyan accent color to the subtitle.
