@@ -7,7 +7,7 @@ import customtkinter as ctk
 
 from core import engine_ping_single, engine_port_single, engine_resolve_domain, engine_test_dns_domain
 from config_manager import ConfigManager
-from ui_shared import MD_BG, MD_SURFACE, MD_SURFACE_2, MD_SURFACE_3, MD_PRIMARY, MD_ON_PRIMARY, MD_TEXT, MD_TEXT_MUTED, MD_RED, MD_NAV_ACTIVE_BG, MD_NAV_ACTIVE_FG, ScrollableTable, APP_VERSION, TOOL_NAME, get_resource_path
+from ui_shared import MD_BG, MD_SURFACE, MD_SURFACE_2, MD_SURFACE_3, MD_PRIMARY, MD_ON_PRIMARY, MD_TEXT, MD_TEXT_MUTED, MD_RED, MD_CYAN, MD_NAV_ACTIVE_BG, MD_NAV_ACTIVE_FG, ScrollableTable, APP_VERSION, TOOL_NAME, get_resource_path
 from ui_views import ViewBuilder
 
 class UltimateNetworkApp(ctk.CTk):
@@ -58,9 +58,9 @@ class UltimateNetworkApp(ctk.CTk):
         self.sidebar_frame.grid_rowconfigure(7, weight=1)
 
         logo_frame = ctk.CTkFrame(self.sidebar_frame, fg_color="transparent")
-        logo_frame.grid(row=0, column=0, padx=20, pady=(30, 30), sticky="w")
-        ctk.CTkLabel(logo_frame, text="ULTIMATE", text_color=MD_PRIMARY, font=("Segoe UI", 20, "bold")).pack(anchor="w")
-        ctk.CTkLabel(logo_frame, text="Network Toolkit", text_color=MD_TEXT, font=("Segoe UI", 16)).pack(anchor="w")
+        logo_frame.grid(row=0, column=0, padx=20, pady=(30, 30), sticky="ew")
+        ctk.CTkLabel(logo_frame, text="🦅 BlueFalcon", text_color=MD_PRIMARY, font=("Segoe UI", 24, "bold")).pack(anchor="center")
+        ctk.CTkLabel(logo_frame, text="NTK", text_color=MD_CYAN, font=("Segoe UI", 16, "bold")).pack(anchor="center")
 
         self.btn_nav_lat = ctk.CTkButton(self.sidebar_frame, text="⏱️ Latency", font=("Segoe UI", 15, "bold"), corner_radius=12, height=44, fg_color="transparent", text_color=MD_TEXT, anchor="w", command=lambda: self.select_sidebar_frame("latency"))
         self.btn_nav_lat.grid(row=1, column=0, sticky="ew", padx=15, pady=5)

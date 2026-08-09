@@ -1,51 +1,60 @@
-<div align="center">
+# 🦅 BlueFalcon NTK
 
-# 🦅 BlueFalcon NTK (Network Toolkit)
+**BlueFalcon NTK** (Network Toolkit) is a powerful, lightning-fast, and extremely easy-to-use application designed for testing and analyzing network performance. Whether you're a gamer trying to find the best DNS server, or a system admin checking if your ports are open, this app does it all from one sleek interface!
 
-**The ultimate all-in-one desktop application for asynchronous network diagnostics, DNS benchmarking, port scanning, and latency testing.**
+---
 
-![Windows](https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
-[![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@BlueFalcon2270)
+## ✨ Features (In Simple Words)
+- **Super Fast:** It does hundreds of tests at the exact same time, so you get your results in seconds, not minutes.
+- **Latency Tester:** Easily check your ping to any IP address or domain using either standard ICMP (Ping) or TCP.
+- **Port Scanner:** Quickly scan a website or IP to see exactly which doors (ports) are open or closed.
+- **Domain Resolver:** Type in a website, and it will find every hidden IP address that runs it. You can even force it to use specific DNS servers!
+- **DNS Benchmark:** Find out which DNS server is actually the fastest for *you*. It tests multiple DNS servers against multiple websites to find the absolute best connection.
+- **Easy Profiles:** Save all your favorite IPs, websites, and DNS servers into a single file so you never have to type them twice.
+- **Modern Dark Mode:** A beautiful, responsive interface that's easy on the eyes.
 
-<br />
-</div>
+---
 
-An advanced, asynchronous desktop application designed to evaluate network configurations. Combining the power of our previous DNS Benchmark and Network Toolkit into one ultimate suite. It allows you to resolve domains, test TCP port accessibility, visualize ICMP ping latencies, and benchmark DNS servers through a sleek, unified Material Design 3 dark-mode dashboard.
+## 🚀 How to Use It
 
-## 🚀 Features
+### 1. Download
+The easiest way to get started is to simply download the latest `.exe` file from our [Releases](#) page. No installation required—just double-click and run!
 
-* **Unified Dashboard:** Four powerful tools in one app: Latency Scanner, Port Scanner, Domain Resolver, and DNS Benchmark.
-* **Material Design 3 UI:** A completely redesigned, responsive dark-mode dashboard utilizing deep surfaces and custom color palettes.
-* **Integrated Profile Manager:** Create, save, and load multiple configuration profiles (IPs, Domains, DNS) directly within the application.
-* **Asynchronous Engines:** Run dozens of port, ping, and DNS tests simultaneously without the UI freezing using optimized asynchronous Python workers.
-* **Instant Export:** Double-click domain results to instantly copy all unique IPs to your clipboard, or use the dedicated copy button.
+### 2. The Tools
+- **⏱️ Latency Tab:** Type in an IP or website, pick your protocol (ICMP or TCP), set your packet count, and hit start. It will show you your min, max, average ping, and jitter.
+- **🔌 Port Tab:** Type in a target and the ports you want to check (like `80, 443, 8000-8010`). It will quickly blast through them and tell you exactly what's open.
+- **🌐 Domain Tab:** Type in a website name to resolve it into IP addresses. You can toggle "Custom DNS" to use two specific DNS servers for the lookup instead of your computer's default.
+- **🦅 DNS Tab:** This tests how fast your DNS servers are! Just hit start, and it will race all your configured DNS servers against your configured domains to see which DNS responds the fastest. Click the "🔽 Sort" button to instantly put the winner at the top.
 
-<br>
+### 3. Importing Your Own Lists (Profiles Tab)
+Tired of typing the same IPs? 
+1. Go to the **📁 Profiles** tab.
+2. Click **Reset to Default** to get a template, or start typing your own lists of IPs, Domains, and DNS servers into the big text box.
+3. Click **Save & Format**. The app will organize them perfectly!
+4. From now on, whenever you run a test, your custom lists will automatically be loaded.
+*(You can also click "Open Profile File" to edit your targets in a regular text editor!)*
+
+---
 
 ## 💻 For Developers
 
-The codebase utilizes a modular architecture separated into four main components for easier development:
-1. `core.py`: Asynchronous network engines (ICMP, TCP, DNS resolving).
-2. `ui_main.py`: Main application UI and logic handling.
-3. `ui_views.py`: Dedicated file for rendering dynamic views (Profiles, About).
-4. `config_manager.py`: File parsing and regex profile management.
+If you want to run the app from source or compile it yourself:
 
-**Requirements:**
-Ensure you have Python 3.8+ and install the required UI framework:
+### Prerequisites
+Make sure you have Python 3.x installed. Then install the requirements:
 ```cmd
-pip install customtkinter
+pip install customtkinter dnspython
 ```
 
-**Compilation:**
-To build your own standalone `.exe` file with the custom icon, activate your virtual environment and run PyInstaller against `main.py`:
+### Running from Source
 ```cmd
-pyinstaller --noconsole --onefile --icon="icon.ico" --add-data "icon.ico;." --name "BlueFalcon NTK v1.0" "main.py"
+python main.py
 ```
 
-<br>
-
-## ✅ Supported Systems
-
-* **Windows 11:** Fully Supported
-* **Windows 10:** Fully Supported
+### Building the Executable (.exe)
+You can compile your own standalone executable complete with the custom icon by running:
+```cmd
+pip install pyinstaller
+pyinstaller --noconsole --onefile --icon="icon.ico" --add-data "icon.ico;." --name "BlueFalcon NTK v1.2" "main.py"
+```
+The finished `.exe` will be generated inside the `dist` folder!
