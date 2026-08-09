@@ -2,6 +2,16 @@
 
 All notable changes to the BlueFalcon NTK project will be documented in this file.
 
+## [v1.7] - 2026-08-09
+### Changed
+- Cleaned up repository tracking: Removed the obsolete `config_default.txt` file and added rules to ignore local `.agents` configurations and user-specific `Profile.txt` data from being pushed to GitHub.
+
+## [v1.6] - 2026-08-09
+### Fixed
+- Fixed broken repository links in the `README.md` file.
+### Added
+- Added an official MIT License file to the repository.
+
 ## [v1.5] - 2026-08-09
 ### Changed
 - Restructured `README.md` layout to use center-aligned headers, a professional badge array, and organized sections for better readability.

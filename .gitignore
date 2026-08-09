@@ -18,9 +18,10 @@ env.bak/
 venv.bak/
 
 # App-specific profiles/configs
-# Keep the default, but ignore others if needed
-# config_*.txt
-!config_default.txt
+Profile.txt
+
+# Local AI agents configuration
+.agents/
 
 # VSCode
 .vscode/
