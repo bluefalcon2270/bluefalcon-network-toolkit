@@ -404,8 +404,11 @@ class UltimateNetworkApp(ctk.CTk):
                     
         elif mode == "dns":
             self._redraw_dns_headers(domains)
+            seen_dns = set()
             for d in dns:
                 dns_ip = d.split()[0]
+                if dns_ip in seen_dns: continue
+                seen_dns.add(dns_ip)
                 scan_jobs.append(dns_ip)
             if not scan_jobs: return
             with self.results_lock:

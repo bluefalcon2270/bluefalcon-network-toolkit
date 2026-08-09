@@ -92,16 +92,42 @@ class ConfigManager:
                 if formatted_item not in dns_list: dns_list.append(formatted_item)
             else:
                 if formatted_item not in ip_list: ip_list.append(formatted_item)
+                if formatted_item not in ip_list: ip_list.append(formatted_item)
                 
-        formatted = "IPs:\n"
-        for item in ip_list: formatted += f"{item}\n"
-        formatted += "\nDomains:\n"
-        for item in domain_list: formatted += f"{item}\n"
-        formatted += "\nDNS:\n"
-        for item in dns_list: formatted += f"{item}\n"
+        ip_list = ConfigManager._deduplicate_list(ip_list)
+        domain_list = ConfigManager._deduplicate_list(domain_list)
+        dns_list = ConfigManager._deduplicate_list(dns_list)
+                
+        output = "IPs:\n"
+        output += "\n".join(ip_list) if ip_list else ""
+        output += "\n\nDomains:\n"
+        output += "\n".join(domain_list) if domain_list else ""
+        output += "\n\nDNS:\n"
+        output += "\n".join(dns_list) if dns_list else ""
             
         data = {"ip_list": ip_list, "domain_list": domain_list, "dns_list": dns_list}
-        return formatted.strip(), data
+        return output.strip(), data
+
+    @staticmethod
+    def _deduplicate_list(items):
+        seen = {}
+        for item in items:
+            parts = item.split(maxsplit=1)
+            target = parts[0]
+            name = parts[1] if len(parts) > 1 else ""
+            
+            if target not in seen:
+                seen[target] = item
+            else:
+                existing_parts = seen[target].split(maxsplit=1)
+                existing_name = existing_parts[1] if len(existing_parts) > 1 else ""
+                
+                if name and not existing_name:
+                    seen[target] = f"{target} {name}"
+                elif name and existing_name and name not in existing_name:
+                    seen[target] = f"{target} {existing_name} / {name}"
+                    
+        return list(seen.values())
 
     @staticmethod
     def load_profile():

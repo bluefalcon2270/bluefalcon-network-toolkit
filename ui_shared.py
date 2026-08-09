@@ -4,7 +4,7 @@ import tkinter as tk
 from tkinter import ttk
 import customtkinter as ctk
 
-APP_VERSION = "1.7"
+APP_VERSION = "1.8"
 TOOL_NAME = f"BlueFalcon NTK v{APP_VERSION}"
 
 # ==========================================

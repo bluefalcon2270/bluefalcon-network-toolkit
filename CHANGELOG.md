@@ -2,6 +2,12 @@
 
 All notable changes to the BlueFalcon NTK project will be documented in this file.
 
+## [v1.8] - 2026-08-09
+### Fixed
+- Fixed an instant crash in the DNS scanner (`_tkinter.TclError`) that occurred when a user profile contained duplicate DNS IP addresses.
+### Added
+- Upgraded the Profile Manager with intelligent deduplication: When saving profiles, the app now automatically filters duplicate IPs/Domains. If duplicates exist with different alias names, the manager automatically combines their names to preserve all context.
+
 ## [v1.7] - 2026-08-09
 ### Changed
 - Cleaned up repository tracking: Removed the obsolete `config_default.txt` file and added rules to ignore local `.agents` configurations and user-specific `Profile.txt` data from being pushed to GitHub.
