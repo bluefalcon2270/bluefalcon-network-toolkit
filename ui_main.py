@@ -130,13 +130,14 @@ class UltimateNetworkApp(ctk.CTk):
         self.in_lat_proto.set("ICMP")
         self.in_lat_proto.pack(side="left", padx=(5,15))
         
-        ctk.CTkLabel(inner, text="Port:", font=("Segoe UI", 14, "bold"), text_color=MD_TEXT_MUTED).pack(side="left")
-        self.in_lat_port = ctk.CTkEntry(inner, width=65, justify="center", fg_color=MD_SURFACE_3, border_width=0)
+        self.lat_port_frame = ctk.CTkFrame(inner, fg_color="transparent")
+        ctk.CTkLabel(self.lat_port_frame, text="Port:", font=("Segoe UI", 14, "bold"), text_color=MD_TEXT_MUTED).pack(side="left")
+        self.in_lat_port = ctk.CTkEntry(self.lat_port_frame, width=65, justify="center", fg_color=MD_SURFACE_3, border_width=0)
         self.in_lat_port.insert(0, "443")
         self.in_lat_port.pack(side="left", padx=(5,15))
-        self.in_lat_port.configure(state="disabled", text_color=MD_TEXT_MUTED)
         
-        ctk.CTkLabel(inner, text="Packets:", font=("Segoe UI", 14, "bold"), text_color=MD_TEXT_MUTED).pack(side="left")
+        self.lbl_lat_pkts = ctk.CTkLabel(inner, text="Packets:", font=("Segoe UI", 14, "bold"), text_color=MD_TEXT_MUTED)
+        self.lbl_lat_pkts.pack(side="left")
         self.in_lat_pkts = ctk.CTkEntry(inner, width=65, justify="center", fg_color=MD_SURFACE_3, border_width=0)
         self.in_lat_pkts.insert(0, "10")
         self.in_lat_pkts.pack(side="left", padx=(5,15))
@@ -159,9 +160,9 @@ class UltimateNetworkApp(ctk.CTk):
 
     def toggle_lat_port(self, choice):
         if choice == "TCP":
-            self.in_lat_port.configure(state="normal", text_color=MD_TEXT)
+            self.lat_port_frame.pack(side="left", before=self.lbl_lat_pkts)
         else:
-            self.in_lat_port.configure(state="disabled", text_color=MD_TEXT_MUTED)
+            self.lat_port_frame.pack_forget()
 
     def build_port_ui(self, parent):
         inner = self._create_top_card(parent, "🔌 Port Scanner")
@@ -207,6 +208,11 @@ class UltimateNetworkApp(ctk.CTk):
         self.in_dom_dns2.pack(side="left", padx=(5,15))
         
         self.dom_actions_frame = ctk.CTkFrame(inner, fg_color="transparent")
+        
+        ctk.CTkLabel(self.dom_actions_frame, text="Timeout(ms):", font=("Segoe UI", 14, "bold"), text_color=MD_TEXT_MUTED).pack(side="left")
+        self.in_dom_time = ctk.CTkEntry(self.dom_actions_frame, width=65, justify="center", fg_color=MD_SURFACE_3, border_width=0)
+        self.in_dom_time.insert(0, "1000")
+        self.in_dom_time.pack(side="left", padx=(5,15))
         
         ctk.CTkLabel(self.dom_actions_frame, text="Workers:", font=("Segoe UI", 14, "bold"), text_color=MD_TEXT_MUTED).pack(side="left")
         self.in_dom_threads = ctk.CTkEntry(self.dom_actions_frame, width=65, justify="center", fg_color=MD_SURFACE_3, border_width=0)
@@ -645,6 +651,8 @@ class UltimateNetworkApp(ctk.CTk):
         await asyncio.gather(*tasks)
 
     async def async_run_domain(self, scan_jobs):
+        try: timeout_ms = int(self.in_dom_time.get())
+        except: timeout_ms = 1000
         try: workers = int(self.in_dom_threads.get())
         except: workers = 1000
         
@@ -660,7 +668,7 @@ class UltimateNetworkApp(ctk.CTk):
         async def resolve_target(host):
             async with sem:
                 if self.abort_event.is_set(): return
-                domain, ip_list, err = await engine_resolve_domain(host, self.abort_event, dns_servers)
+                domain, ip_list, err = await engine_resolve_domain(host, self.abort_event, dns_servers, timeout_ms)
                 self.dispatch_to_ui(self.update_domain_row, domain, ip_list, err)
         tasks = [resolve_target(h) for h, a in scan_jobs]
         await asyncio.gather(*tasks)

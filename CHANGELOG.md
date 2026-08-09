@@ -2,6 +2,12 @@
 
 All notable changes to the BlueFalcon NTK project will be documented in this file.
 
+## [v2.1] - 2026-08-09
+### Added
+- Added a `Timeout(ms)` setting to the Domain tab (defaulting to 1000ms), giving users full control over when to skip unresponsive DNS queries.
+### Changed
+- Improved the Latency tab UI: the `Port:` input field is now dynamically hidden entirely when the `ICMP` protocol is selected, making the toolbar much cleaner.
+
 ## [v2.0] - 2026-08-09
 ### Added
 - Added a live progress indicator to the DNS tab (`Progress: X/Total`) that updates in real-time alongside the "Start Test" button.

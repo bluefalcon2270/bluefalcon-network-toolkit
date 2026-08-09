@@ -7,7 +7,7 @@ import time
 import subprocess
 import dns.resolver
 
-def _sync_resolve(domain: str, dns_servers: list = None):
+def _sync_resolve(domain: str, dns_servers: list = None, timeout_ms: int = 5000):
     domain = domain.strip()
     
     if dns_servers:
@@ -19,7 +19,8 @@ def _sync_resolve(domain: str, dns_servers: list = None):
                 system = platform.system().lower()
                 creationflags = subprocess.CREATE_NO_WINDOW if "windows" in system else 0
                 cmd = ["nslookup", domain, dns_server]
-                result = subprocess.run(cmd, capture_output=True, text=True, timeout=5, creationflags=creationflags)
+                t_sec = max(1, timeout_ms // 1000)
+                result = subprocess.run(cmd, capture_output=True, text=True, timeout=t_sec, creationflags=creationflags)
                 
                 output = result.stdout
                 lines = output.split('\n')
@@ -56,10 +57,16 @@ def _sync_resolve(domain: str, dns_servers: list = None):
     except OSError as e:
         return (domain, [], f"OS Error: {e}")
 
-async def engine_resolve_domain(domain: str, abort_event: asyncio.Event = None, dns_servers: list = None):
+async def engine_resolve_domain(domain: str, abort_event: asyncio.Event = None, dns_servers: list = None, timeout_ms: int = 5000):
     if abort_event and abort_event.is_set():
         return (domain, [], "Aborted")
-    return await asyncio.to_thread(_sync_resolve, domain, dns_servers)
+    try:
+        return await asyncio.wait_for(
+            asyncio.to_thread(_sync_resolve, domain, dns_servers, timeout_ms),
+            timeout=timeout_ms / 1000.0
+        )
+    except (asyncio.TimeoutError, TimeoutError):
+        return (domain, [], "Timeout")
 
 async def engine_ping_single(ip, timeout_ms=1000, abort_event: asyncio.Event = None, protocol="icmp", port=None):
     if abort_event and abort_event.is_set():
