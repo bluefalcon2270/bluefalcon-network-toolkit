@@ -2,6 +2,10 @@
 
 All notable changes to the BlueFalcon NTK project will be documented in this file.
 
+## [v1.5] - 2026-08-09
+### Changed
+- Restructured `README.md` layout to use center-aligned headers, a professional badge array, and organized sections for better readability.
+
 ## [v1.4] - 2026-08-09
 ### Added
 - Embedded high-quality application screenshot into the `README.md` to improve GitHub repository presentation.
