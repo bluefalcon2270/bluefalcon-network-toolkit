@@ -148,7 +148,7 @@ class UltimateNetworkApp(ctk.CTk):
         
         ctk.CTkLabel(inner, text="Workers:", font=("Segoe UI", 14, "bold"), text_color=MD_TEXT_MUTED).pack(side="left")
         self.in_lat_workers = ctk.CTkEntry(inner, width=65, justify="center", fg_color=MD_SURFACE_3, border_width=0)
-        self.in_lat_workers.insert(0, "50")
+        self.in_lat_workers.insert(0, "1000")
         self.in_lat_workers.pack(side="left", padx=(5,15))
 
         self.btn_start_lat = ctk.CTkButton(inner, text="Start Test", font=("Segoe UI", 15, "bold"), fg_color=MD_PRIMARY, text_color=MD_ON_PRIMARY, command=lambda: self.toggle_scan("latency"))
@@ -173,12 +173,12 @@ class UltimateNetworkApp(ctk.CTk):
         
         ctk.CTkLabel(inner, text="Timeout(ms):", font=("Segoe UI", 14, "bold"), text_color=MD_TEXT_MUTED).pack(side="left")
         self.in_prt_time = ctk.CTkEntry(inner, width=65, justify="center", fg_color=MD_SURFACE_3, border_width=0)
-        self.in_prt_time.insert(0, "2000")
+        self.in_prt_time.insert(0, "1000")
         self.in_prt_time.pack(side="left", padx=(5,15))
         
         ctk.CTkLabel(inner, text="Workers:", font=("Segoe UI", 14, "bold"), text_color=MD_TEXT_MUTED).pack(side="left")
         self.in_prt_workers = ctk.CTkEntry(inner, width=65, justify="center", fg_color=MD_SURFACE_3, border_width=0)
-        self.in_prt_workers.insert(0, "100")
+        self.in_prt_workers.insert(0, "1000")
         self.in_prt_workers.pack(side="left", padx=(5,15))
 
         self.btn_start_prt = ctk.CTkButton(inner, text="Start Test", font=("Segoe UI", 15, "bold"), fg_color=MD_PRIMARY, text_color=MD_ON_PRIMARY, command=lambda: self.toggle_scan("port"))
@@ -210,7 +210,7 @@ class UltimateNetworkApp(ctk.CTk):
         
         ctk.CTkLabel(self.dom_actions_frame, text="Workers:", font=("Segoe UI", 14, "bold"), text_color=MD_TEXT_MUTED).pack(side="left")
         self.in_dom_threads = ctk.CTkEntry(self.dom_actions_frame, width=65, justify="center", fg_color=MD_SURFACE_3, border_width=0)
-        self.in_dom_threads.insert(0, "50")
+        self.in_dom_threads.insert(0, "1000")
         self.in_dom_threads.pack(side="left", padx=(5,15))
         
         self.btn_export_dom = ctk.CTkButton(self.dom_actions_frame, text="Copy IPs", font=("Segoe UI", 13, "bold"), width=100, corner_radius=18, fg_color=MD_SURFACE_2, text_color=MD_TEXT, hover_color=MD_SURFACE_3, command=self.export_domain_ips)
@@ -280,14 +280,14 @@ class UltimateNetworkApp(ctk.CTk):
     def build_dns_ui(self, parent):
         inner = self._create_top_card(parent, "🦅 DNS Benchmark")
         
-        ctk.CTkLabel(inner, text="Timeout(s):", font=("Segoe UI", 14, "bold"), text_color=MD_TEXT_MUTED).pack(side="left")
+        ctk.CTkLabel(inner, text="Timeout(ms):", font=("Segoe UI", 14, "bold"), text_color=MD_TEXT_MUTED).pack(side="left")
         self.in_dns_time = ctk.CTkEntry(inner, width=65, justify="center", fg_color=MD_SURFACE_3, border_width=0)
-        self.in_dns_time.insert(0, "5.0")
+        self.in_dns_time.insert(0, "1000")
         self.in_dns_time.pack(side="left", padx=(5,15))
         
         ctk.CTkLabel(inner, text="Workers:", font=("Segoe UI", 14, "bold"), text_color=MD_TEXT_MUTED).pack(side="left")
         self.in_dns_workers = ctk.CTkEntry(inner, width=65, justify="center", fg_color=MD_SURFACE_3, border_width=0)
-        self.in_dns_workers.insert(0, "150")
+        self.in_dns_workers.insert(0, "1000")
         self.in_dns_workers.pack(side="left", padx=(5,15))
         
         self.btn_dns_sort = ctk.CTkButton(inner, text="🔽 Sort", font=("Segoe UI", 13, "bold"), width=80, corner_radius=18, fg_color="transparent", text_color=MD_TEXT, hover_color=MD_SURFACE_2, border_width=1, border_color=MD_SURFACE_3, command=self.sort_dns_results)
@@ -426,8 +426,11 @@ class UltimateNetworkApp(ctk.CTk):
         self.after(30, self.process_queue)
         
         def thread_worker():
+            import concurrent.futures
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
+            executor = concurrent.futures.ThreadPoolExecutor(max_workers=2000)
+            loop.set_default_executor(executor)
             self.abort_event = asyncio.Event()
             if mode == "latency": loop.run_until_complete(self.async_run_latency(scan_jobs))
             elif mode == "port": loop.run_until_complete(self.async_run_port(scan_jobs))
@@ -581,7 +584,7 @@ class UltimateNetworkApp(ctk.CTk):
         except: timeout_ms = 1000
         protocol = self.in_lat_proto.get()
         try: workers = int(self.in_lat_workers.get())
-        except: workers = 50
+        except: workers = 1000
         
         target_port = None
         if protocol == "TCP":
@@ -603,9 +606,9 @@ class UltimateNetworkApp(ctk.CTk):
 
     async def async_run_port(self, scan_jobs):
         try: timeout_ms = int(self.in_prt_time.get())
-        except: timeout_ms = 2000
+        except: timeout_ms = 1000
         try: workers = int(self.in_prt_workers.get())
-        except: workers = 100
+        except: workers = 1000
         sem = asyncio.Semaphore(workers)
         async def port_target(host, port):
             async with sem:
@@ -619,7 +622,7 @@ class UltimateNetworkApp(ctk.CTk):
 
     async def async_run_domain(self, scan_jobs):
         try: workers = int(self.in_dom_threads.get())
-        except: workers = 50
+        except: workers = 1000
         
         dns_servers = None
         if self.dns_switch_var.get() == "on":
@@ -633,16 +636,16 @@ class UltimateNetworkApp(ctk.CTk):
         async def resolve_target(host):
             async with sem:
                 if self.abort_event.is_set(): return
-                domain, ip_list, err = await engine_resolve_domain(host, sem, self.abort_event, dns_servers)
+                domain, ip_list, err = await engine_resolve_domain(host, self.abort_event, dns_servers)
                 self.dispatch_to_ui(self.update_domain_row, domain, ip_list, err)
         tasks = [resolve_target(h) for h, a in scan_jobs]
         await asyncio.gather(*tasks)
 
     async def async_run_dns(self, scan_jobs):
-        try: timeout_sec = float(self.in_dns_time.get())
-        except: timeout_sec = 5.0
+        try: timeout_ms = int(self.in_dns_time.get())
+        except: timeout_ms = 1000
         try: workers = int(self.in_dns_workers.get())
-        except: workers = 150
+        except: workers = 1000
         sem = asyncio.Semaphore(workers)
         
         merged_data = ConfigManager.load_profile()
@@ -651,7 +654,7 @@ class UltimateNetworkApp(ctk.CTk):
         async def resolve_dns(dns_ip, dom):
             async with sem:
                 if self.abort_event.is_set(): return
-                ok, time_str, raw = await engine_test_dns_domain(dns_ip, dom, timeout_sec, sem, self.abort_event)
+                ok, time_str, raw = await engine_test_dns_domain(dns_ip, dom, timeout_ms / 1000.0, self.abort_event)
                 self.dispatch_to_ui(self.update_dns_row, dns_ip, dom, ok, time_str, raw)
                 
         tasks = []

@@ -56,11 +56,10 @@ def _sync_resolve(domain: str, dns_servers: list = None):
     except OSError as e:
         return (domain, [], f"OS Error: {e}")
 
-async def engine_resolve_domain(domain: str, sem: asyncio.Semaphore, abort_event: asyncio.Event = None, dns_servers: list = None):
-    async with sem:
-        if abort_event and abort_event.is_set():
-            return (domain, [], "Aborted")
-        return await asyncio.to_thread(_sync_resolve, domain, dns_servers)
+async def engine_resolve_domain(domain: str, abort_event: asyncio.Event = None, dns_servers: list = None):
+    if abort_event and abort_event.is_set():
+        return (domain, [], "Aborted")
+    return await asyncio.to_thread(_sync_resolve, domain, dns_servers)
 
 async def engine_ping_single(ip, timeout_ms=1000, abort_event: asyncio.Event = None, protocol="icmp", port=None):
     if abort_event and abort_event.is_set():
@@ -167,11 +166,10 @@ def _sync_test_dns_domain(dns_ip, domain, timeout):
         if not ips: return False, "No IP", 0
         ok, t_res = tcp_test(ips[0], 443, timeout)
         if ok: return True, f"{t_res} ms", t_res
-        else: return False, str(t_res), 0
-    except Exception: return False, "?", 0
+        else: return False, "FAIL", 0
+    except Exception: return False, "FAIL", 0
 
-async def engine_test_dns_domain(dns_ip, domain, timeout_sec, sem: asyncio.Semaphore, abort_event: asyncio.Event = None):
-    async with sem:
-        if abort_event and abort_event.is_set():
-            return False, "Aborted", 0
-        return await asyncio.to_thread(_sync_test_dns_domain, dns_ip, domain, timeout_sec)
+async def engine_test_dns_domain(dns_ip, domain, timeout_sec, abort_event: asyncio.Event = None):
+    if abort_event and abort_event.is_set():
+        return False, "Aborted", 0
+    return await asyncio.to_thread(_sync_test_dns_domain, dns_ip, domain, timeout_sec)
