@@ -2,6 +2,10 @@
 
 All notable changes to the BlueFalcon NTK project will be documented in this file.
 
+## [v1.9] - 2026-08-09
+### Fixed
+- Fixed an oversight where the hardcoded SVG Version badge in `README.md` was left outdated at `v1.6`.
+
 ## [v1.8] - 2026-08-09
 ### Fixed
 - Fixed an instant crash in the DNS scanner (`_tkinter.TclError`) that occurred when a user profile contained duplicate DNS IP addresses.

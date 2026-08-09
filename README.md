@@ -5,7 +5,7 @@
 **A powerful, lightning-fast, and extremely easy-to-use application designed for testing and analyzing network performance.**
 
 ![Platform](https://img.shields.io/badge/Platform-Windows%2010%20%7C%2011-0078D6?style=for-the-badge&logo=windows&logoColor=white)
-[![Version](https://img.shields.io/badge/Version-v1.6-007AFF?style=for-the-badge)](https://github.com/bluefalcon2270/BlueFalcon-NTK/releases)
+[![Version](https://img.shields.io/badge/Version-v1.9-007AFF?style=for-the-badge)](https://github.com/bluefalcon2270/BlueFalcon-NTK/releases)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
 <br />
