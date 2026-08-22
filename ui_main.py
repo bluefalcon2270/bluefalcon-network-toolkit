@@ -21,6 +21,12 @@ class UltimateNetworkApp(ctk.CTk):
         icon_path = get_resource_path("icon.ico")
         if os.path.exists(icon_path):
             self.iconbitmap(icon_path)
+            try:
+                import ctypes
+                myappid = f'bluefalcon.ntk.app.{APP_VERSION}'
+                ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+            except Exception:
+                pass
             
         self.is_scanning = False
         self.abort_event = None
