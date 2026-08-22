@@ -10,7 +10,7 @@ from config_manager import ConfigManager
 from ui_shared import MD_BG, MD_SURFACE, MD_SURFACE_2, MD_SURFACE_3, MD_PRIMARY, MD_ON_PRIMARY, MD_TEXT, MD_TEXT_MUTED, MD_RED, MD_CYAN, MD_NAV_ACTIVE_BG, MD_NAV_ACTIVE_FG, ScrollableTable, APP_VERSION, TOOL_NAME, get_resource_path
 from ui_views import ViewBuilder
 
-class UltimateNetworkApp(ctk.CTk):
+class NetworkToolkitApp(ctk.CTk):
     def __init__(self):
         super().__init__()
         

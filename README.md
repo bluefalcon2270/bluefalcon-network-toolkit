@@ -5,7 +5,7 @@
 **The ultimate network diagnostics toolkit for Windows, featuring DPI-aware scanning and concurrent DNS benchmarking.**
 
 ![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
-[![Version](https://img.shields.io/badge/Version-v2.3-007AFF?style=for-the-badge)](#)
+[![Version](https://img.shields.io/badge/Version-v2.4-007AFF?style=for-the-badge)](#)
 [![Language](https://img.shields.io/badge/Written%20in-Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 

@@ -1,5 +1,5 @@
-from ui_main import UltimateNetworkApp
+from ui_main import NetworkToolkitApp
 
 if __name__ == "__main__":
-    app = UltimateNetworkApp()
+    app = NetworkToolkitApp()
     app.mainloop()

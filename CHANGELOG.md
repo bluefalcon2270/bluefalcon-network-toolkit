@@ -2,6 +2,10 @@
 
 All notable changes to the BlueFalcon Network Toolkit project will be documented in this file.
 
+## [v2.4] - 2026-08-23
+### Fixed
+- Fixed an internal naming inconsistency where the UI and main Python class referred to the app as `Ultimate Network Toolkit` instead of `BlueFalcon Network Toolkit`.
+
 ## [v2.3] - 2026-08-23
 ### Changed
 - Standardized project name, README, and common files structure.

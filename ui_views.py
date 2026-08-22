@@ -80,7 +80,7 @@ class ViewBuilder:
         card.place(relx=0.5, rely=0.5, anchor="center")
         
         ctk.CTkLabel(card, text="🦅", font=("Segoe UI Emoji", 64)).pack(pady=(50, 15))
-        ctk.CTkLabel(card, text="Ultimate Network Toolkit", text_color=MD_TEXT, font=("Segoe UI", 28, "bold")).pack(pady=0)
+        ctk.CTkLabel(card, text="BlueFalcon Network Toolkit", text_color=MD_TEXT, font=("Segoe UI", 28, "bold")).pack(pady=0)
         ctk.CTkLabel(card, text=f"Version {APP_VERSION}", text_color=MD_PRIMARY, font=("Segoe UI", 16, "bold")).pack(pady=5)
         ctk.CTkLabel(card, text="A high-performance async diagnostic utility.", text_color=MD_TEXT_MUTED, font=("Segoe UI", 15)).pack(pady=(15, 5))
         ctk.CTkLabel(card, text="Developed with love by BlueFalcon", text_color=MD_TEXT_MUTED, font=("Segoe UI", 14, "italic")).pack(pady=(5, 40))
