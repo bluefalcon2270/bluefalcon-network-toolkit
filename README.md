@@ -5,7 +5,7 @@
 **A powerful, lightning-fast, and extremely easy-to-use application designed for testing and analyzing network performance.**
 
 ![Platform](https://img.shields.io/badge/Platform-Windows%2010%20%7C%2011-0078D6?style=for-the-badge&logo=windows&logoColor=white)
-[![Version](https://img.shields.io/badge/Version-v2.1-007AFF?style=for-the-badge)](https://github.com/bluefalcon2270/BlueFalcon-NTK/releases)
+[![Version](https://img.shields.io/badge/Version-v2.2-007AFF?style=for-the-badge)](https://github.com/bluefalcon2270/BlueFalcon-NTK/releases)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
 <br />
@@ -66,7 +66,7 @@ You can compile your own standalone executable complete with the custom icon by 
 
 ```cmd
 pip install pyinstaller
-pyinstaller --noconsole --onefile --icon="icon.ico" --add-data "icon.ico;." --name "BlueFalcon NTK v1.5" "main.py"
+pyinstaller --noconsole --onefile --icon="icon.ico" --add-data "icon.ico;." --name "BlueFalcon NTK v2.2" "main.py"
 ```
 
 <br>

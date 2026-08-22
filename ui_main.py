@@ -126,7 +126,7 @@ class UltimateNetworkApp(ctk.CTk):
         inner = self._create_top_card(parent, "⏱️ Latency Scanner")
         
         ctk.CTkLabel(inner, text="Protocol:", font=("Segoe UI", 14, "bold"), text_color=MD_TEXT_MUTED).pack(side="left")
-        self.in_lat_proto = ctk.CTkOptionMenu(inner, values=["ICMP", "TCP"], width=80, fg_color=MD_SURFACE_3, command=self.toggle_lat_port)
+        self.in_lat_proto = ctk.CTkOptionMenu(inner, values=["ICMP", "TCP", "TCP-L7"], width=80, fg_color=MD_SURFACE_3, command=self.toggle_lat_port)
         self.in_lat_proto.set("ICMP")
         self.in_lat_proto.pack(side="left", padx=(5,15))
         
@@ -159,7 +159,7 @@ class UltimateNetworkApp(ctk.CTk):
         self.tbl_lat.pack(fill="both", expand=True, padx=30, pady=(0, 20))
 
     def toggle_lat_port(self, choice):
-        if choice == "TCP":
+        if choice.startswith("TCP"):
             self.lat_port_frame.pack(side="left", before=self.lbl_lat_pkts)
         else:
             self.lat_port_frame.pack_forget()
@@ -617,7 +617,7 @@ class UltimateNetworkApp(ctk.CTk):
         except: workers = 1000
         
         target_port = None
-        if protocol == "TCP":
+        if protocol.startswith("TCP"):
             try: target_port = int(self.in_lat_port.get())
             except: target_port = 443
             

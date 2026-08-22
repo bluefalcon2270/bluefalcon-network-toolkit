@@ -72,9 +72,9 @@ async def engine_ping_single(ip, timeout_ms=1000, abort_event: asyncio.Event = N
     if abort_event and abort_event.is_set():
         return None
         
-    if protocol.lower() == "tcp" and port is not None:
-        return await engine_port_single(ip, port, timeout_ms / 1000.0, abort_event)
-        
+    if protocol.lower().startswith("tcp") and port is not None:
+        l7_mode = (protocol.lower() == "tcp-l7")
+        return await engine_port_single(ip, port, timeout_ms / 1000.0, abort_event, l7_mode=l7_mode)
     system = platform.system().lower()
     count_flag = "-n" if "windows" in system else "-c"
     timeout_flag = "-w" if "windows" in system else "-W"
@@ -122,7 +122,7 @@ async def engine_ping_single(ip, timeout_ms=1000, abort_event: asyncio.Event = N
         pass
     return None
 
-async def engine_port_single(ip, port, timeout_sec=2.0, abort_event: asyncio.Event = None):
+async def engine_port_single(ip, port, timeout_sec=2.0, abort_event: asyncio.Event = None, l7_mode=False):
     if abort_event and abort_event.is_set():
         return None
         
@@ -144,8 +144,41 @@ async def engine_port_single(ip, port, timeout_sec=2.0, abort_event: asyncio.Eve
             reader, writer = await asyncio.wait_for(conn, timeout=timeout_sec)
             
         dt = (time.time() - t0) * 1000
+        
+        if l7_mode:
+            read_timeout = min(0.5, timeout_sec / 2)
+            l7_success = False
+            try:
+                data = await asyncio.wait_for(reader.read(1024), timeout=read_timeout)
+                if data and b"SSH-" in data:
+                    l7_success = True
+            except asyncio.TimeoutError:
+                try:
+                    writer.write(b"GET / HTTP/1.1\r\nHost: " + ip.encode() + b"\r\n\r\n")
+                    await writer.drain()
+                    data = await asyncio.wait_for(reader.read(1024), timeout=timeout_sec - read_timeout)
+                    if data:
+                        l7_success = True
+                except Exception:
+                    pass
+            except Exception:
+                pass
+                
+            writer.close()
+            try:
+                await writer.wait_closed()
+            except Exception:
+                pass
+                
+            if not l7_success:
+                return None
+            return dt
+            
         writer.close()
-        await writer.wait_closed()
+        try:
+            await writer.wait_closed()
+        except Exception:
+            pass
         return dt
     except Exception:
         return None

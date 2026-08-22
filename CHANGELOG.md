@@ -2,6 +2,10 @@
 
 All notable changes to the BlueFalcon NTK project will be documented in this file.
 
+## [v2.2] - 2026-08-22
+### Added
+- Implemented a unified `TCP-L7` test for the Latency Scanner to bypass DPI (Deep Packet Inspection). It connects and waits for a proactive application banner (like SSH) and, if it times out, automatically sends an HTTP GET request to provoke a response. This accurately verifies that the application layer is accessible, defeating DPI systems that fake TCP SYN-ACK responses.
+
 ## [v2.1] - 2026-08-09
 ### Added
 - Added a `Timeout(ms)` setting to the Domain tab (defaulting to 1000ms), giving users full control over when to skip unresponsive DNS queries.
