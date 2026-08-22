@@ -2,6 +2,10 @@
 
 All notable changes to the BlueFalcon Network Toolkit project will be documented in this file.
 
+## [v2.6] - 2026-08-23
+### Added
+- Added a collapsible gallery in README.md to neatly display multiple toolkit screenshots.
+
 ## [v2.5] - 2026-08-23
 ### Changed
 - Removed the top header from the Profile Manager tab to maximize the text box height.

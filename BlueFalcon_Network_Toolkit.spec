@@ -22,7 +22,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='BlueFalcon_Network_Toolkit_v2.5',
+    name='BlueFalcon_Network_Toolkit_v2.6',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,

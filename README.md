@@ -5,7 +5,7 @@
 **The ultimate network diagnostics toolkit for Windows, featuring DPI-aware scanning and concurrent DNS benchmarking.**
 
 ![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
-[![Version](https://img.shields.io/badge/Version-v2.5-007AFF?style=for-the-badge)](#)
+[![Version](https://img.shields.io/badge/Version-v2.6-007AFF?style=for-the-badge)](#)
 [![Language](https://img.shields.io/badge/Written%20in-Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
@@ -18,8 +18,26 @@ A native Windows toolkit designed for advanced network diagnostics. It includes 
 
 <br>
 
-## 📸 Screenshot
-![Screenshot](Screenshot.png)
+## 📸 Screenshots
+
+![Main Interface](Screenshot.png)
+
+<details>
+<summary><b>Click to expand more screenshots</b></summary>
+<br>
+
+![Screenshot 2](screenshot_2.png)
+<br>
+
+![Screenshot 3](screenshot_3.png)
+<br>
+
+![Screenshot 4](screenshot_4.png)
+<br>
+
+![Screenshot 5](screenshot_5.png)
+
+</details>
 
 <br>
 

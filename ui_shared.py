@@ -4,7 +4,7 @@ import tkinter as tk
 from tkinter import ttk
 import customtkinter as ctk
 
-APP_VERSION = "2.5"
+APP_VERSION = "2.6"
 TOOL_NAME = f"BlueFalcon Network Toolkit v{APP_VERSION}"
 
 # ==========================================
