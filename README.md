@@ -13,7 +13,7 @@
 
 Whether you're a gamer trying to find the best DNS server, or a system admin checking if your ports are open, this app does it all from one sleek interface! It features a multi-threaded engine capable of hundreds of concurrent tests, returning results in seconds, all wrapped in a modern Material Design 3 Dark Theme.
 
-![alt text](screenshot.png)
+![alt text](Screenshot.png)
 
 ## 🚀 How to Use
 
