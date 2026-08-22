@@ -12,7 +12,7 @@ class ViewBuilder:
     @staticmethod
     def build_profiles_view(app, parent_frame):
         frame = ctk.CTkFrame(parent_frame, fg_color="transparent")
-        ctk.CTkLabel(frame, text="📁 Profile Manager", font=("Segoe UI", 24, "bold"), text_color=MD_TEXT).pack(anchor="w", pady=(20, 20), padx=30)
+        
 
         edit_card = ctk.CTkFrame(frame, fg_color=MD_SURFACE, corner_radius=24)
         edit_card.pack(fill="both", expand=True, padx=30, pady=10)

@@ -2,6 +2,11 @@
 
 All notable changes to the BlueFalcon Network Toolkit project will be documented in this file.
 
+## [v2.5] - 2026-08-23
+### Changed
+- Removed the top header from the Profile Manager tab to maximize the text box height.
+- Appended "Network" to the primary sidebar navigation header for consistency.
+
 ## [v2.4] - 2026-08-23
 ### Fixed
 - Fixed an internal naming inconsistency where the UI and main Python class referred to the app as `Ultimate Network Toolkit` instead of `BlueFalcon Network Toolkit`.
