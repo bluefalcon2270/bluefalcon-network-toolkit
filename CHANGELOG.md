@@ -1,6 +1,10 @@
 # Changelog
 
-All notable changes to the BlueFalcon NTK project will be documented in this file.
+All notable changes to the BlueFalcon Network Toolkit project will be documented in this file.
+
+## [v2.3] - 2026-08-23
+### Changed
+- Standardized project name, README, and common files structure.
 
 ## [v2.2] - 2026-08-22
 ### Added

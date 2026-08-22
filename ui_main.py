@@ -23,7 +23,7 @@ class UltimateNetworkApp(ctk.CTk):
             self.iconbitmap(icon_path)
             try:
                 import ctypes
-                myappid = f'bluefalcon.ntk.app.{APP_VERSION}'
+                myappid = f'bluefalcon.networktoolkit.app.{APP_VERSION}'
                 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
             except Exception:
                 pass
@@ -66,7 +66,7 @@ class UltimateNetworkApp(ctk.CTk):
         logo_frame = ctk.CTkFrame(self.sidebar_frame, fg_color="transparent")
         logo_frame.grid(row=0, column=0, padx=20, pady=(30, 30), sticky="ew")
         ctk.CTkLabel(logo_frame, text="🦅 BlueFalcon", text_color=MD_PRIMARY, font=("Segoe UI", 24, "bold")).pack(anchor="center")
-        ctk.CTkLabel(logo_frame, text="NTK", text_color=MD_CYAN, font=("Segoe UI", 16, "bold")).pack(anchor="center")
+        ctk.CTkLabel(logo_frame, text="Toolkit", text_color=MD_CYAN, font=("Segoe UI", 16, "bold")).pack(anchor="center")
 
         self.btn_nav_lat = ctk.CTkButton(self.sidebar_frame, text="⏱️ Latency", font=("Segoe UI", 15, "bold"), corner_radius=12, height=44, fg_color="transparent", text_color=MD_TEXT, anchor="w", command=lambda: self.select_sidebar_frame("latency"))
         self.btn_nav_lat.grid(row=1, column=0, sticky="ew", padx=15, pady=5)
